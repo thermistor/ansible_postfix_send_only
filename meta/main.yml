@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: Weston Triemstra
   description: Install and configure a send-only postfix
