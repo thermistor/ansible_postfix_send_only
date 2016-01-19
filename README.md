@@ -15,7 +15,7 @@ Ubuntu
 
     - hosts: servers
       roles:
-         - { role: postfix_send_only, postmaster_email: you@example.com  }
+         - { role: postfix_send_only, postmaster_email: you@example.com, postfix_send_only_hostname: example.com  }
 
 ## License
 
