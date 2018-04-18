@@ -15,7 +15,7 @@
     - postfix
 
 - name: configure /etc/aliases to forward root's email
-  lineinfile: dest=/etc/aliases regexp="^root:.*" line="root:{{ postmaster_email }}"
+  lineinfile: dest=/etc/aliases regexp="^root:.*" line="root:{{ postfix_send_only_postmaster_email }}"
   tags:
     - postfix
 

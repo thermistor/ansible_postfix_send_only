@@ -8,14 +8,16 @@ Ubuntu
 
 ## Role Variables
 
-* `postmaster_email` the email address for the postmaster of the server.
+* `postfix_send_only_postmaster_email` the email address for the postmaster of the server.
 * `postfix_send_only_hostname` the hostname for sending from
 
 ## Example Playbook
 
     - hosts: servers
       roles:
-         - { role: postfix_send_only, postmaster_email: you@example.com, postfix_send_only_hostname: example.com  }
+         - role: thermistor.postfix_send_only
+           postfix_send_only_postmaster_email: you@example.com
+           postfix_send_only_hostname: example.com
 
 ## License
 

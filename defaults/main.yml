@@ -1,2 +1,2 @@
 ---
-postmaster_email: hostmaster@example.com
+postfix_send_only_postmaster_email: hostmaster@example.com
