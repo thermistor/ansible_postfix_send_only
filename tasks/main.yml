@@ -17,17 +17,20 @@
 
 - name: Install /etc/mailname
   copy:
-    content: "{{postfix_send_only_hostname}}{{'\n'}}"
+    content: "{{ postfix_send_only_hostname }}{{ '\n' }}"
     dest: /etc/mailname
     owner: root
     group: root
     mode: 0644
+
 
 - name: configure /etc/aliases to forward root's email
   lineinfile:
     dest: /etc/aliases
     regexp: "^root:.*"
     line: "root:{{ postfix_send_only_postmaster_email }}"
+  register: aliases
 
 - name: rebuild /etc/aliases
   action: command /usr/bin/newaliases
+  when: aliases is changed
