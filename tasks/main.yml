@@ -1,10 +1,17 @@
 ---
 
 - name: Install packages for postfix
-  apt: pkg=postfix state=latest
+  apt:
+    pkg: ['postfix']
+    state: present
 
 - name: Setup a sending only mail server via main.cf
-  template: src=main.cf.j2 dest=/etc/postfix/main.cf owner=root group=root mode=0644
+  template:
+    src: main.cf.j2
+    dest: /etc/postfix/main.cf
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart postfix
 
@@ -17,7 +24,10 @@
     mode: 0644
 
 - name: configure /etc/aliases to forward root's email
-  lineinfile: dest=/etc/aliases regexp="^root:.*" line="root:{{ postfix_send_only_postmaster_email }}"
+  lineinfile:
+    dest: /etc/aliases
+    regexp: "^root:.*"
+    line: "root:{{ postfix_send_only_postmaster_email }}"
 
 - name: rebuild /etc/aliases
   action: command /usr/bin/newaliases
