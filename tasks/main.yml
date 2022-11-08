@@ -22,7 +22,9 @@
     owner: root
     group: root
     mode: 0644
-
+  tags:
+    - mailname
+    - hostname
 
 - name: configure /etc/aliases to forward root's email
   lineinfile:
