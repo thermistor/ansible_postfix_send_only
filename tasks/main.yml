@@ -1,22 +1,22 @@
 ---
 
 - name: Install packages for postfix
-  apt:
+  ansible.builtin.apt:
     pkg: ['postfix']
     state: present
 
 - name: Setup a sending only mail server via main.cf
-  template:
+  ansible.builtin.template:
     src: main.cf.j2
     dest: /etc/postfix/main.cf
     owner: root
     group: root
     mode: '0644'
   notify:
-    - restart postfix
+    - Restart postfix
 
 - name: Install /etc/mailname
-  copy:
+  ansible.builtin.copy:
     content: "{{ postfix_send_only_hostname }}{{ '\n' }}"
     dest: /etc/mailname
     owner: root
@@ -26,13 +26,11 @@
     - mailname
     - hostname
 
-- name: configure /etc/aliases to forward root's email
-  lineinfile:
+- name: Configure /etc/aliases to forward root's email
+  ansible.builtin.lineinfile:
     dest: /etc/aliases
     regexp: "^root:.*"
     line: "root:{{ postfix_send_only_postmaster_email }}"
   register: aliases
-
-- name: rebuild /etc/aliases
-  action: command /usr/bin/newaliases
-  when: aliases is changed
+  changed_when: aliases.changed
+  notify: Rebuild aliases

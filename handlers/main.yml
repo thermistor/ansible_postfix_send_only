@@ -1,5 +1,10 @@
 ---
 
-- name: restart postfix
-  service: name=postfix state=restarted
-  become: yes
+- name: Restart postfix
+  ansible.builtin.service:
+    name: postfix
+    state: restarted
+  become: true
+
+- name: Rebuild aliases
+  ansible.builtin.command: /usr/bin/newaliases
