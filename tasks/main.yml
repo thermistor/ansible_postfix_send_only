@@ -11,7 +11,7 @@
     dest: /etc/postfix/main.cf
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   notify:
     - restart postfix
 
@@ -21,7 +21,7 @@
     dest: /etc/mailname
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   tags:
     - mailname
     - hostname
