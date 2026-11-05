@@ -2,7 +2,10 @@
 
 - name: Install packages for postfix
   ansible.builtin.apt:
-    pkg: ['postfix']
+    pkg:
+      - postfix
+      # SASL authentication with the relay host
+      - libsasl2-modules
     state: present
 
 - name: Setup a sending only mail server via main.cf
@@ -12,6 +15,45 @@
     owner: root
     group: root
     mode: '0644'
+  notify:
+    - Restart postfix
+
+- name: Configure the relay host credentials
+  ansible.builtin.template:
+    src: sasl_passwd.j2
+    dest: /etc/postfix/sasl_passwd
+    owner: root
+    group: root
+    mode: '0600'
+  no_log: true
+  when: postfix_send_only_relay_host | length > 0
+  notify:
+    - Restart postfix
+
+- name: Remove the relay host credentials when not relaying
+  ansible.builtin.file:
+    path: /etc/postfix/sasl_passwd
+    state: absent
+  when: postfix_send_only_relay_host | length == 0
+  notify:
+    - Restart postfix
+
+- name: Configure rewriting of local senders to the relay sender domain
+  ansible.builtin.template:
+    src: sender_canonical.j2
+    dest: /etc/postfix/sender_canonical
+    owner: root
+    group: root
+    mode: '0644'
+  when: postfix_send_only_relay_sender_domain | length > 0
+  notify:
+    - Restart postfix
+
+- name: Remove rewriting of local senders when not configured
+  ansible.builtin.file:
+    path: /etc/postfix/sender_canonical
+    state: absent
+  when: postfix_send_only_relay_sender_domain | length == 0
   notify:
     - Restart postfix
 

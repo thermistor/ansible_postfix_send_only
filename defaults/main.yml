@@ -1,3 +1,16 @@
 ---
 postfix_send_only_postmaster_email: hostmaster@example.com
 postfix_send_only_smtp_tls_loglevel: 0
+postfix_send_only_compatibility_level: '3.6'
+
+# Relay all mail through an SMTP provider (e.g. Mailgun, SES, Postmark) instead
+# of delivering directly, needed on AWS where outbound port 25 is blocked.
+# Leave the host empty to deliver directly.
+postfix_send_only_relay_host: ''
+postfix_send_only_relay_port: 587
+postfix_send_only_relay_username: ''
+postfix_send_only_relay_password: ''
+
+# Rewrite local senders (user@hostname, user@localhost) to user@this domain,
+# so the relay provider accepts them. Leave empty to keep the local senders.
+postfix_send_only_relay_sender_domain: ''

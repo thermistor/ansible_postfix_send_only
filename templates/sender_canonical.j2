@@ -1,0 +1,2 @@
+# {{ ansible_managed }}
+/^([^@]+)@({{ postfix_send_only_hostname | regex_escape }}|localhost)$/ ${1}@{{ postfix_send_only_relay_sender_domain }}

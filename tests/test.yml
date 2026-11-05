@@ -1,5 +1,7 @@
 ---
-- hosts: localhost
+- name: Test the postfix_send_only role
+  hosts: localhost
   remote_user: root
   roles:
-    - postfix_send_only
+    - role: thermistor.postfix_send_only
+      postfix_send_only_hostname: example.com
